@@ -1,0 +1,53 @@
+# 博客配置
+title: "Fountunt's Blog"
+tagline: "记录思考，分享技术"
+description: "一个关于技术、编程和生活的个人博客"
+author: Fountunt
+
+# 基础 URL 设置
+# 如果你用 <username>.github.io 格式，baseurl 设为 ""
+# 如果用自定义域名，也是 ""
+baseurl: ""
+url: "https://fountunt.github.io"
+
+# 社交链接
+social:
+  github: fountunt
+
+# 主题设置
+permalink: /:year/:month/:title/
+paginate: 10
+paginate_path: "/page:num/"
+
+# 构建设置
+markdown: kramdown
+highlighter: rouge
+
+# 排除文件
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+
+# 默认 YAML front matter
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      comments: true
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "page"
+
+# 插件
+plugins:
+  - jekyll-paginate
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-feed
