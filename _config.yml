@@ -8,11 +8,11 @@ author: Fountunt
 # 如果你用 <username>.github.io 格式，baseurl 设为 ""
 # 如果用自定义域名，也是 ""
 baseurl: ""
-url: "https://fountunt.github.io"
+url: "https://fountunt_blog.github.io"
 
 # 社交链接
 social:
-  github: fountunt
+  github: fountunt_blog
 
 # 主题设置
 permalink: /:year/:month/:title/
