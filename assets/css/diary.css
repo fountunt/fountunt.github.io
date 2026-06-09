@@ -2,14 +2,14 @@
 
 /* 日记页背景穿透 — 降低父级玻璃卡片透明度，让背景图清晰可见 */
 .main-content > .container:has(.diary-page) {
-  background: rgba(255, 255, 255, 0.2) !important;
-  backdrop-filter: blur(4px) !important;
-  -webkit-backdrop-filter: blur(4px) !important;
+  background: rgba(255, 255, 255, 0.55) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
 }
 
 @media (prefers-color-scheme: dark) {
   .main-content > .container:has(.diary-page) {
-    background: rgba(15, 23, 42, 0.2) !important;
+    background: rgba(15, 23, 42, 0.55) !important;
   }
 }
 
@@ -283,16 +283,16 @@
 
 /* ========== 响应式 ========== */
 @media (max-width: 768px) {
-  /* 手机端日记页背景更透 */
+  /* 手机端日记页背景 */
   .main-content > .container:has(.diary-page) {
-    background: rgba(255, 255, 255, 0.12) !important;
-    backdrop-filter: blur(2px) !important;
-    -webkit-backdrop-filter: blur(2px) !important;
+    background: rgba(255, 255, 255, 0.55) !important;
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
   }
 
   @media (prefers-color-scheme: dark) {
     .main-content > .container:has(.diary-page) {
-      background: rgba(15, 23, 42, 0.12) !important;
+      background: rgba(15, 23, 42, 0.55) !important;
     }
   }
 
