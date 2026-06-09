@@ -36,21 +36,7 @@ permalink: /diary/
 
     <div class="diary-entries">
 
-      <!-- 条目模板 -->
-      <article class="diary-entry">
-        <div class="diary-entry-date">
-          <span class="diary-entry-day">09</span>
-          <span class="diary-entry-month">六月</span>
-          <span class="diary-entry-year">2026</span>
-        </div>
-        <div class="diary-entry-body">
-          <h3 class="diary-entry-title">第一篇日记</h3>
-          <div class="diary-entry-text">
-            <p>这是你的日记本。所有内容只对你可见。</p>
-            <p>点击右上角 <i class="fas fa-pen"></i> 可以添加新条目。</p>
-          </div>
-        </div>
-      </article>
+
 
     </div>
 
@@ -59,6 +45,36 @@ permalink: /diary/
       <i class="fas fa-pen"></i> 写新日记
     </button>
 
+  </div>
+</div>
+
+<!-- ===== 写日记 / 编辑弹窗 ===== -->
+<div id="diary-modal-overlay" class="diary-modal-overlay">
+  <div class="diary-modal">
+    <div class="diary-modal-header">
+      <h3 id="diary-modal-title">写新日记</h3>
+      <button class="diary-modal-close" onclick="diaryCloseModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="diary-modal-body">
+      <div class="diary-modal-field">
+        <label for="diary-modal-input-title">标题</label>
+        <input type="text" id="diary-modal-input-title" placeholder="给日记起个标题..." maxlength="100">
+      </div>
+      <div class="diary-modal-field">
+        <label for="diary-modal-input-content">内容</label>
+        <textarea id="diary-modal-input-content" placeholder="今天发生了什么？写下你的想法..." rows="8"></textarea>
+      </div>
+    </div>
+    <div class="diary-modal-footer">
+      <button class="diary-modal-btn diary-modal-btn-cancel" onclick="diaryCloseModal()">
+        <i class="fas fa-times"></i> 取消
+      </button>
+      <button class="diary-modal-btn diary-modal-btn-save" onclick="diarySaveEntry()">
+        <i class="fas fa-check"></i> 保存
+      </button>
+    </div>
   </div>
 </div>
 
