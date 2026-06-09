@@ -81,7 +81,6 @@ function sha256(text) {
 function unlock(password) {
   const hash = sha256(password);
   if (hash === DIARY_HASH) {
-    localStorage.setItem('diary_unlocked', 'true');
     showContent();
     return true;
   }
@@ -98,11 +97,6 @@ function showError() {
   passwordInput.value = '';
   passwordInput.focus();
   setTimeout(() => errorEl.classList.remove('show'), 2500);
-}
-
-// ── 检查是否已解锁 ──────────────────────
-if (localStorage.getItem('diary_unlocked') === 'true') {
-  showContent();
 }
 
 // ── 解锁事件 ────────────────────────────
@@ -177,44 +171,7 @@ const MONTHS = ['一月','二月','三月','四月','五月','六月','七月','
 let editTarget = null;  // 编辑模式下指向被编辑的条目 body
 
 // ── 弹窗 DOM ────────────────────────────
-// 动态创建弹窗，直接追加到 body，避免被卡片 backdrop-filter 层叠上下文限制
-function createModal() {
-  const overlay = document.createElement('div');
-  overlay.id = 'diary-modal-overlay';
-  overlay.className = 'diary-modal-overlay';
-  overlay.innerHTML = `
-    <div class="diary-modal">
-      <div class="diary-modal-header">
-        <h3 id="diary-modal-title">写新日记</h3>
-        <button class="diary-modal-close" onclick="diaryCloseModal()">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-      <div class="diary-modal-body">
-        <div class="diary-modal-field">
-          <label for="diary-modal-input-title">标题</label>
-          <input type="text" id="diary-modal-input-title" placeholder="给日记起个标题..." maxlength="100">
-        </div>
-        <div class="diary-modal-field">
-          <label for="diary-modal-input-content">内容</label>
-          <textarea id="diary-modal-input-content" placeholder="今天发生了什么？写下你的想法..." rows="8"></textarea>
-        </div>
-      </div>
-      <div class="diary-modal-footer">
-        <button class="diary-modal-btn diary-modal-btn-cancel" onclick="diaryCloseModal()">
-          <i class="fas fa-times"></i> 取消
-        </button>
-        <button class="diary-modal-btn diary-modal-btn-save" onclick="diarySaveEntry()">
-          <i class="fas fa-check"></i> 保存
-        </button>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(overlay);
-  return overlay;
-}
-
-const modalOverlay = createModal();
+const modalOverlay = document.getElementById('diary-modal-overlay');
 const modalEl = document.querySelector('.diary-modal');
 const modalHeader = document.querySelector('.diary-modal-header');
 const modalTitle = document.getElementById('diary-modal-title');
