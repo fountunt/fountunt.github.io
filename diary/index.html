@@ -1,0 +1,65 @@
+---
+layout: default
+title: 日记
+permalink: /diary/
+---
+
+<link rel="stylesheet" href="{{ '/assets/css/diary.css' | relative_url }}">
+
+<div class="diary-page">
+
+  <!-- ===== 密码锁界面 ===== -->
+  <div id="diary-lock" class="diary-lock">
+    <div class="diary-lock-card">
+      <div class="diary-lock-icon">
+        <i class="fas fa-lock"></i>
+      </div>
+      <h2 class="diary-lock-title">日记本已上锁</h2>
+      <p class="diary-lock-desc">请输入密码解锁</p>
+      <div class="diary-lock-input-wrap">
+        <input type="password" id="diary-password" class="diary-lock-input" placeholder="输入密码" autocomplete="off">
+        <button id="diary-unlock-btn" class="diary-lock-btn">
+          <i class="fas fa-key"></i> 解锁
+        </button>
+      </div>
+      <p id="diary-error" class="diary-lock-error">密码错误，请重试</p>
+    </div>
+  </div>
+
+  <!-- ===== 日记内容（初始隐藏） ===== -->
+  <div id="diary-content" class="diary-content" style="display: none;">
+
+    <div class="diary-header">
+      <h1 class="diary-title"><i class="fas fa-book-open"></i> 我的日记</h1>
+      <p class="diary-subtitle">记录那些值得被记住的日子</p>
+    </div>
+
+    <div class="diary-entries">
+
+      <!-- 条目模板 -->
+      <article class="diary-entry">
+        <div class="diary-entry-date">
+          <span class="diary-entry-day">09</span>
+          <span class="diary-entry-month">六月</span>
+          <span class="diary-entry-year">2026</span>
+        </div>
+        <div class="diary-entry-body">
+          <h3 class="diary-entry-title">第一篇日记</h3>
+          <div class="diary-entry-text">
+            <p>这是你的日记本。所有内容只对你可见。</p>
+            <p>点击右上角 <i class="fas fa-pen"></i> 可以添加新条目。</p>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- 添加条目按钮 -->
+    <button id="diary-add-btn" class="diary-add-btn" onclick="diaryAddEntry()">
+      <i class="fas fa-pen"></i> 写新日记
+    </button>
+
+  </div>
+</div>
+
+<script src="{{ '/assets/js/diary.js' | relative_url }}"></script>
