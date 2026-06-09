@@ -281,6 +281,180 @@
   background: var(--accent-light);
 }
 
+/* ========== 日记编辑器弹窗 ========== */
+.diary-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.diary-modal-overlay.active {
+  display: flex;
+}
+
+.diary-modal {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: diaryModalIn 0.25s ease;
+}
+
+@keyframes diaryModalIn {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.diary-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px 0;
+}
+
+.diary-modal-header h3 {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.diary-modal-close {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: var(--bg-secondary);
+  color: var(--text-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.diary-modal-close:hover {
+  background: var(--border);
+  color: var(--text-primary);
+}
+
+.diary-modal-body {
+  padding: 20px 24px;
+}
+
+.diary-modal-field {
+  margin-bottom: 16px;
+}
+
+.diary-modal-field label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.diary-modal-field input,
+.diary-modal-field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+  font-family: var(--font-sans);
+}
+
+.diary-modal-field input:focus,
+.diary-modal-field textarea:focus {
+  border-color: var(--accent);
+}
+
+.diary-modal-field textarea {
+  min-height: 180px;
+  resize: vertical;
+  line-height: 1.7;
+}
+
+.diary-modal-footer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding: 0 24px 20px;
+}
+
+.diary-modal-btn {
+  padding: 10px 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.diary-modal-btn-cancel {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+}
+
+.diary-modal-btn-cancel:hover {
+  border-color: var(--text-muted);
+}
+
+.diary-modal-btn-save {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.diary-modal-btn-save:hover {
+  background: var(--accent-dark);
+  border-color: var(--accent-dark);
+}
+
+@media (max-width: 768px) {
+  .diary-modal {
+    max-width: 100%;
+    border-radius: var(--radius-sm);
+  }
+
+  .diary-modal-header {
+    padding: 16px 18px 0;
+  }
+
+  .diary-modal-body {
+    padding: 16px 18px;
+  }
+
+  .diary-modal-footer {
+    padding: 0 18px 16px;
+  }
+
+  .diary-modal-field textarea {
+    min-height: 140px;
+  }
+}
+
 /* ========== 响应式 ========== */
 @media (max-width: 768px) {
   /* 手机端日记页背景 */

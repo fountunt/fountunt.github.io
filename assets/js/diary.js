@@ -154,7 +154,7 @@ function renderEntry(entry) {
       <span class="diary-entry-year">${entry.year}</span>
     </div>
     <div class="diary-entry-body">
-      <h3 class="diary-entry-title">${entry.title}</h3>
+      <h3 class="diary-entry-title">${escapeHtml(entry.title)}</h3>
       <div class="diary-entry-text">${entry.content}</div>
       <div class="diary-entry-actions">
         <button onclick="diaryEditEntry(this)" title="编辑">
@@ -173,65 +173,129 @@ function renderEntry(entry) {
 function pad(n) { return String(n).padStart(2, '0'); }
 const MONTHS = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
 
+// ── 编辑弹窗状态 ────────────────────────
+let editTarget = null;  // 编辑模式下指向被编辑的条目 body
+
+// ── 弹窗 DOM ────────────────────────────
+const modalOverlay = document.getElementById('diary-modal-overlay');
+const modalTitle = document.getElementById('diary-modal-title');
+const inputTitle = document.getElementById('diary-modal-input-title');
+const inputContent = document.getElementById('diary-modal-input-content');
+
+function diaryOpenModal(mode) {
+  modalOverlay.classList.add('active');
+  if (mode === 'edit') {
+    modalTitle.textContent = '编辑日记';
+  } else {
+    modalTitle.textContent = '写新日记';
+  }
+  // 聚焦标题
+  setTimeout(() => inputTitle.focus(), 100);
+}
+
+window.diaryCloseModal = function() {
+  modalOverlay.classList.remove('active');
+  inputTitle.value = '';
+  inputContent.value = '';
+  editTarget = null;
+};
+
+// 点击遮罩层关闭
+modalOverlay.addEventListener('click', (e) => {
+  if (e.target === modalOverlay) diaryCloseModal();
+});
+
+// Ctrl+Enter 快速保存
+inputContent.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+    e.preventDefault();
+    diarySaveEntry();
+  }
+});
+
+// ── 保存条目 ──────────────────────────
+window.diarySaveEntry = function() {
+  const title = inputTitle.value.trim();
+  const content = inputContent.value.trim();
+  if (!title) {
+    inputTitle.focus();
+    inputTitle.style.borderColor = '#ef4444';
+    setTimeout(() => inputTitle.style.borderColor = '', 1500);
+    return;
+  }
+  if (!content) {
+    inputContent.focus();
+    inputContent.style.borderColor = '#ef4444';
+    setTimeout(() => inputContent.style.borderColor = '', 1500);
+    return;
+  }
+
+  const now = new Date();
+  const html = '<p>' + content.replace(/\n{2,}/g, '</p><p>').replace(/\n/g, '<br>') + '</p>';
+
+  if (editTarget) {
+    // ── 编辑模式 ──
+    editTarget.querySelector('.diary-entry-title').textContent = title;
+    editTarget.querySelector('.diary-entry-text').innerHTML = html;
+  } else {
+    // ── 新增模式 ──
+    const entry = {
+      day: pad(now.getDate()),
+      month: MONTHS[now.getMonth()],
+      year: String(now.getFullYear()),
+    };
+
+    const article = document.createElement('article');
+    article.className = 'diary-entry';
+    article.innerHTML = `
+      <div class="diary-entry-date">
+        <span class="diary-entry-day">${entry.day}</span>
+        <span class="diary-entry-month">${entry.month}</span>
+        <span class="diary-entry-year">${entry.year}</span>
+      </div>
+      <div class="diary-entry-body">
+        <h3 class="diary-entry-title">${escapeHtml(title)}</h3>
+        <div class="diary-entry-text">${html}</div>
+        <div class="diary-entry-actions">
+          <button onclick="diaryEditEntry(this)" title="编辑">
+            <i class="fas fa-edit"></i> 编辑
+          </button>
+          <button class="diary-btn-delete" onclick="diaryDeleteEntry(this)" title="删除">
+            <i class="fas fa-trash"></i> 删除
+          </button>
+        </div>
+      </div>
+    `;
+    entriesContainer.insertBefore(article, entriesContainer.firstChild);
+  }
+
+  diaryCloseModal();
+  saveEntries();
+};
+
+function escapeHtml(text) {
+  const d = document.createElement('div');
+  d.textContent = text;
+  return d.innerHTML;
+}
+
 // ── 添加新条目 ──────────────────────────
 window.diaryAddEntry = function() {
-  const now = new Date();
-  const title = prompt('日记标题：');
-  if (!title || !title.trim()) return;
-  const text = prompt('写点什么：');
-  if (text === null) return;
-
-  const entry = {
-    day: pad(now.getDate()),
-    month: MONTHS[now.getMonth()],
-    year: String(now.getFullYear()),
-    title: title.trim(),
-    content: '<p>' + text.trim().replace(/\n/g, '</p><p>') + '</p>',
-  };
-
-  // 插入到最前面
-  const article = document.createElement('article');
-  article.className = 'diary-entry';
-  article.innerHTML = `
-    <div class="diary-entry-date">
-      <span class="diary-entry-day">${entry.day}</span>
-      <span class="diary-entry-month">${entry.month}</span>
-      <span class="diary-entry-year">${entry.year}</span>
-    </div>
-    <div class="diary-entry-body">
-      <h3 class="diary-entry-title">${entry.title}</h3>
-      <div class="diary-entry-text">${entry.content}</div>
-      <div class="diary-entry-actions">
-        <button onclick="diaryEditEntry(this)" title="编辑">
-          <i class="fas fa-edit"></i> 编辑
-        </button>
-        <button class="diary-btn-delete" onclick="diaryDeleteEntry(this)" title="删除">
-          <i class="fas fa-trash"></i> 删除
-        </button>
-      </div>
-    </div>
-  `;
-  entriesContainer.insertBefore(article, entriesContainer.firstChild);
-  saveEntries();
+  editTarget = null;
+  diaryOpenModal('add');
 };
 
 // ── 编辑条目 ──────────────────────────
 window.diaryEditEntry = function(btn) {
   const body = btn.closest('.diary-entry-body');
+  editTarget = body;
+
   const titleEl = body.querySelector('.diary-entry-title');
   const textEl = body.querySelector('.diary-entry-text');
 
-  const newTitle = prompt('修改标题：', titleEl.textContent);
-  if (!newTitle || !newTitle.trim()) return;
-
-  // 把 innerHTML 转回纯文本给 prompt
-  const oldText = textEl.innerText;
-  const newText = prompt('修改内容：', oldText);
-  if (newText === null) return;
-
-  titleEl.textContent = newTitle.trim();
-  textEl.innerHTML = '<p>' + newText.trim().replace(/\n/g, '</p><p>') + '</p>';
-  saveEntries();
+  inputTitle.value = titleEl.textContent;
+  inputContent.value = textEl.innerText;
+  diaryOpenModal('edit');
 };
 
 // ── 删除条目 ──────────────────────────
