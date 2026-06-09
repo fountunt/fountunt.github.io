@@ -184,6 +184,9 @@ const modalTitle = document.getElementById('diary-modal-title');
 const inputTitle = document.getElementById('diary-modal-input-title');
 const inputContent = document.getElementById('diary-modal-input-content');
 
+// 弹窗移到 body 下，避免被父级层叠上下文限制 z-index
+document.body.appendChild(modalOverlay);
+
 // ── 弹窗拖拽 ────────────────────────────
 let dragState = null;
 
