@@ -374,3 +374,6 @@ window.diaryDeleteEntry = function(btn) {
 
 // ── 加载已保存条目 ─────────────────────
 loadEntries();
+
+// ── 页面打开时滚动到顶部 ───────────────
+window.scrollTo(0, 0);
