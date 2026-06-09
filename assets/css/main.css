@@ -84,19 +84,20 @@ img {
 
 /* ========== 头部 ========== */
 .site-header {
-  background: var(--bg-primary);
-  border-bottom: 1px solid var(--border);
-  height: var(--header-height);
   position: sticky;
   top: 0;
   z-index: 100;
-  backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.9);
+  height: var(--header-height);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 @media (prefers-color-scheme: dark) {
   .site-header {
-    background: rgba(15, 23, 42, 0.9);
+    background: rgba(15, 23, 42, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 }
 
