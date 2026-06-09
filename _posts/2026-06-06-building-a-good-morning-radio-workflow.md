@@ -444,7 +444,6 @@ async function main({ params }: { params: Record<string, any> }): Promise<Record
     return ret;
 }
 ```
-、
 ### 创建视频草稿
 通过米核的剪映小助手对输入的数据进行处理
 输出剪映视频草稿
