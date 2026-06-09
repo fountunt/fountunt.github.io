@@ -1,5 +1,18 @@
 /* ========== 日记专区 ========== */
 
+/* 日记页背景穿透 — 降低父级玻璃卡片透明度，让背景图清晰可见 */
+.main-content > .container:has(.diary-page) {
+  background: rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .main-content > .container:has(.diary-page) {
+    background: rgba(15, 23, 42, 0.2) !important;
+  }
+}
+
 /* 密码锁 */
 .diary-lock {
   display: flex;
@@ -143,7 +156,7 @@
   display: flex;
   gap: 20px;
   padding: 24px;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.15);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   transition: all 0.2s;
@@ -151,7 +164,7 @@
 
 @media (prefers-color-scheme: dark) {
   .diary-entry {
-    background: rgba(15, 23, 42, 0.5);
+    background: rgba(15, 23, 42, 0.15);
   }
 }
 
@@ -270,6 +283,19 @@
 
 /* ========== 响应式 ========== */
 @media (max-width: 768px) {
+  /* 手机端日记页背景更透 */
+  .main-content > .container:has(.diary-page) {
+    background: rgba(255, 255, 255, 0.12) !important;
+    backdrop-filter: blur(2px) !important;
+    -webkit-backdrop-filter: blur(2px) !important;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .main-content > .container:has(.diary-page) {
+      background: rgba(15, 23, 42, 0.12) !important;
+    }
+  }
+
   .diary-lock-card {
     padding: 32px 20px;
   }

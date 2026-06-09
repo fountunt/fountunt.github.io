@@ -4,7 +4,7 @@
 // 将密码改为你的专属密码后，运行以下命令获取新 hash：
 //   python3 -c "import hashlib; print(hashlib.sha256('你的密码'.encode()).hexdigest())"
 // 然后把下面 HASH 的值替换掉。
-const DIARY_HASH = '7059daf80d6fb5a3e6632ae3c765f7646c4f71b29f0fb3e22cd7dbd46b65e577';
+const DIARY_HASH = 'ebd72b510911af3e254a030cd891cb804e1902189eee7a0f6199472eb5e4dba2';
 
 // ── DOM 引用 ──────────────────────────────
 const lockEl = document.getElementById('diary-lock');
