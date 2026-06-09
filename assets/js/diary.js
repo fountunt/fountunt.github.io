@@ -178,11 +178,77 @@ let editTarget = null;  // 编辑模式下指向被编辑的条目 body
 
 // ── 弹窗 DOM ────────────────────────────
 const modalOverlay = document.getElementById('diary-modal-overlay');
+const modalEl = document.querySelector('.diary-modal');
+const modalHeader = document.querySelector('.diary-modal-header');
 const modalTitle = document.getElementById('diary-modal-title');
 const inputTitle = document.getElementById('diary-modal-input-title');
 const inputContent = document.getElementById('diary-modal-input-content');
 
+// ── 弹窗拖拽 ────────────────────────────
+let dragState = null;
+
+modalHeader.addEventListener('mousedown', (e) => {
+  if (e.target.closest('.diary-modal-close')) return;
+  const rect = modalEl.getBoundingClientRect();
+  modalEl.style.position = 'fixed';
+  modalEl.style.left = rect.left + 'px';
+  modalEl.style.top = rect.top + 'px';
+  modalEl.style.transform = 'none';
+  modalEl.style.margin = '0';
+  dragState = {
+    offsetX: e.clientX - rect.left,
+    offsetY: e.clientY - rect.top,
+  };
+  document.body.style.userSelect = 'none';
+});
+
+document.addEventListener('mousemove', (e) => {
+  if (!dragState) return;
+  modalEl.style.left = (e.clientX - dragState.offsetX) + 'px';
+  modalEl.style.top = (e.clientY - dragState.offsetY) + 'px';
+});
+
+document.addEventListener('mouseup', () => {
+  if (!dragState) return;
+  dragState = null;
+  document.body.style.userSelect = '';
+});
+
+// ── 触屏拖拽（手机端） ─────────────────
+modalHeader.addEventListener('touchstart', (e) => {
+  if (e.target.closest('.diary-modal-close')) return;
+  const touch = e.touches[0];
+  const rect = modalEl.getBoundingClientRect();
+  modalEl.style.position = 'fixed';
+  modalEl.style.left = rect.left + 'px';
+  modalEl.style.top = rect.top + 'px';
+  modalEl.style.transform = 'none';
+  modalEl.style.margin = '0';
+  dragState = {
+    offsetX: touch.clientX - rect.left,
+    offsetY: touch.clientY - rect.top,
+  };
+}, { passive: true });
+
+document.addEventListener('touchmove', (e) => {
+  if (!dragState) return;
+  const touch = e.touches[0];
+  modalEl.style.left = (touch.clientX - dragState.offsetX) + 'px';
+  modalEl.style.top = (touch.clientY - dragState.offsetY) + 'px';
+}, { passive: true });
+
+document.addEventListener('touchend', () => {
+  dragState = null;
+});
+
 function diaryOpenModal(mode) {
+  // 重置弹窗位置（居中）
+  modalEl.style.position = '';
+  modalEl.style.left = '';
+  modalEl.style.top = '';
+  modalEl.style.transform = '';
+  modalEl.style.margin = '';
+
   modalOverlay.classList.add('active');
   if (mode === 'edit') {
     modalTitle.textContent = '编辑日记';

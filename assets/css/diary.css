@@ -321,6 +321,12 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px 24px 0;
+  cursor: grab;
+  user-select: none;
+}
+
+.diary-modal-header:active {
+  cursor: grabbing;
 }
 
 .diary-modal-header h3 {
