@@ -4,6 +4,11 @@
   <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
   <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
 
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="{{ '/assets/favicon.svg' | relative_url }}">
+  <link rel="icon" type="image/png" sizes="128x128" href="{{ '/assets/favicon.png' | relative_url }}">
+  <link rel="shortcut icon" href="{{ '/assets/favicon.ico' | relative_url }}">
+
   <!-- SEO -->
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
   <meta property="og:title" content="{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}">

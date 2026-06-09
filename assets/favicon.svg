@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+  </defs>
+  <!-- 圆角方形背景 -->
+  <rect x="8" y="8" width="112" height="112" rx="24" ry="24" fill="url(#bg)"/>
+  <!-- 字母 "F" -->
+  <text x="64" y="84" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="72" font-weight="700" fill="white" text-anchor="middle">F</text>
+</svg>
