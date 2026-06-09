@@ -53,22 +53,12 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background:
-    linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)),
-    url('/assets/bg.jpg') center / cover fixed no-repeat;
+  background: url('/assets/bg.jpg') center / cover fixed no-repeat;
   color: var(--text-primary);
   line-height: 1.8;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    background:
-      linear-gradient(rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.92)),
-      url('/assets/bg.jpg') center / cover fixed no-repeat;
-  }
 }
 
 a {
