@@ -53,7 +53,7 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background: url('/assets/bg.jpg') center / cover fixed no-repeat;
+  background: url('/assets/1.jpg') center / cover fixed no-repeat;
   color: var(--text-primary);
   line-height: 1.8;
   min-height: 100vh;
@@ -813,6 +813,10 @@ img {
   :root {
     --header-height: 56px;
     --radius: 10px;
+  }
+
+  body {
+    background: url('/assets/2.jpeg') center / cover fixed no-repeat;
   }
 
   .container {
