@@ -45,6 +45,30 @@ permalink: /diary/
       <i class="fas fa-pen"></i> 写新日记
     </button>
 
+    <!-- ===== GitHub 同步设置 ===== -->
+    <div class="diary-sync-section">
+      <div class="diary-sync-header" onclick="toggleSyncSettings()">
+        <i class="fas fa-cog"></i>
+        <span>GitHub 同步</span>
+        <span id="diary-sync-status" class="diary-sync-badge"></span>
+        <i class="fas fa-chevron-down diary-sync-arrow"></i>
+      </div>
+      <div id="diary-sync-body" class="diary-sync-body" style="display:none">
+        <p class="diary-sync-desc">配置 GitHub Token 后，写日记会自动同步到仓库，换设备也不丢失。</p>
+        <div class="diary-sync-field">
+          <input type="password" id="diary-token-input" placeholder="GitHub Personal Access Token" autocomplete="off">
+          <button id="diary-token-save-btn" onclick="saveGithubToken()">保存</button>
+        </div>
+        <p class="diary-sync-tip">
+          <i class="fas fa-info-circle"></i>
+          需要 <code>repo</code> 权限。
+          <a href="https://github.com/settings/tokens/new?scopes=repo&description=blog-diary" target="_blank">
+            创建 Token →
+          </a>
+        </p>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -77,5 +101,8 @@ permalink: /diary/
     </div>
   </div>
 </div>
+
+<!-- Jekyll 注入初始数据（在 JS 加载前） -->
+<script id="diary-initial-data" type="application/json">{{ site.data.diary | jsonify }}</script>
 
 <script src="{{ '/assets/js/diary.js' | relative_url }}"></script>

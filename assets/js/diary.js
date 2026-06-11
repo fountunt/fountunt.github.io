@@ -116,9 +116,31 @@ const entriesContainer = document.querySelector('.diary-entries');
 
 // 加载已保存的条目
 function loadEntries() {
+  // 1. 优先从 localStorage 加载
   const saved = localStorage.getItem('diary_entries');
-  if (!saved) return;
-  const entries = JSON.parse(saved);
+  if (saved) {
+    renderEntries(JSON.parse(saved));
+  }
+
+  // 2. 如果 localStorage 无数据，尝试从 Jekyll 嵌入数据加载
+  if (!saved) {
+    const el = document.getElementById('diary-initial-data');
+    if (el) {
+      try {
+        const entries = JSON.parse(el.textContent);
+        if (Array.isArray(entries) && entries.length > 0) {
+          renderEntries(entries);
+          localStorage.setItem('diary_entries', JSON.stringify(entries));
+        }
+      } catch (e) {}
+    }
+  }
+
+  // 3. 后台从 GitHub 拉取最新数据
+  refreshFromGithub();
+}
+
+function renderEntries(entries) {
   entriesContainer.innerHTML = '';
   entries.forEach(entry => renderEntry(entry));
 }
@@ -135,8 +157,142 @@ function getEntries() {
 }
 
 function saveEntries() {
-  localStorage.setItem('diary_entries', JSON.stringify(getEntries()));
+  const entries = getEntries();
+  localStorage.setItem('diary_entries', JSON.stringify(entries));
+  syncToGithubDebounced(entries);
 }
+
+// ── GitHub 同步 ──────────────────────────
+const GITHUB_OWNER = 'fountunt';
+const GITHUB_REPO = 'fountunt.github.io';
+const GITHUB_PATH = '_data/diary.json';
+const GITHUB_API_URL = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_PATH}`;
+
+function utf8ToBase64(str) {
+  return btoa(unescape(encodeURIComponent(str)));
+}
+
+function base64ToUtf8(str) {
+  return decodeURIComponent(escape(atob(str)));
+}
+
+function getGithubToken()      { return localStorage.getItem('github_token') || ''; }
+function setGithubToken(token) { localStorage.setItem('github_token', token); }
+
+// 从 GitHub 拉取最新数据
+async function refreshFromGithub() {
+  const token = getGithubToken();
+  if (!token) return;
+
+  try {
+    const res = await fetch(GITHUB_API_URL, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    const entries = JSON.parse(base64ToUtf8(data.content));
+    if (Array.isArray(entries)) {
+      renderEntries(entries);
+      localStorage.setItem('diary_entries', JSON.stringify(entries));
+      updateSyncStatus(true);
+    }
+  } catch (e) {
+    // 静默失败，localStorage 数据不受影响
+  }
+}
+
+let syncTimer = null;
+
+function syncToGithubDebounced(entries) {
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(() => syncToGithub(entries), 2000);
+}
+
+async function syncToGithub(entries) {
+  const token = getGithubToken();
+  if (!token) return;
+
+  try {
+    updateSyncStatus(null);  // 显示"同步中"
+
+    const res = await fetch(GITHUB_API_URL, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error(`GET ${res.status}`);
+
+    const fileInfo = await res.json();
+
+    const content = utf8ToBase64(JSON.stringify(entries, null, 2));
+    const putRes = await fetch(GITHUB_API_URL, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message: `📝 更新日记 (${new Date().toLocaleString('zh-CN')})`,
+        content: content,
+        sha: fileInfo.sha,
+      })
+    });
+
+    if (!putRes.ok) throw new Error(`PUT ${putRes.status}`);
+    updateSyncStatus(true);
+  } catch (e) {
+    console.error('GitHub 同步失败:', e);
+    updateSyncStatus(false);
+  }
+}
+
+function updateSyncStatus(ok) {
+  const el = document.getElementById('diary-sync-status');
+  if (!el) return;
+  if (ok === true) {
+    el.innerHTML = '<span style="color:#22c55e"><i class="fas fa-check-circle"></i> 已同步</span>';
+  } else if (ok === false) {
+    el.innerHTML = '<span style="color:#ef4444"><i class="fas fa-exclamation-circle"></i> 同步失败</span>';
+  } else if (ok === null) {
+    el.innerHTML = '<span style="color:#f59e0b"><i class="fas fa-sync fa-spin"></i> 同步中...</span>';
+  } else {
+    el.innerHTML = '';
+  }
+}
+
+// ── 同步设置 UI ──────────────────────────
+window.toggleSyncSettings = function() {
+  const body = document.getElementById('diary-sync-body');
+  const arrow = document.querySelector('.diary-sync-arrow');
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  if (arrow) arrow.classList.toggle('open', !isOpen);
+
+  // 展开时回填已保存的 token
+  if (!isOpen) {
+    const input = document.getElementById('diary-token-input');
+    if (input) input.value = getGithubToken();
+  }
+};
+
+window.saveGithubToken = function() {
+  const input = document.getElementById('diary-token-input');
+  const token = input.value.trim();
+  if (!token) return;
+
+  setGithubToken(token);
+  updateSyncStatus(null);  // 显示"同步中"
+
+  // 立即尝试同步或拉取
+  const entries = getEntries();
+  if (entries.length > 0) {
+    syncToGithub(entries);
+  } else {
+    refreshFromGithub();
+  }
+
+  // 视觉反馈
+  input.style.borderColor = '#22c55e';
+  setTimeout(() => input.style.borderColor = '', 1500);
+};
 
 function renderEntry(entry) {
   const article = document.createElement('article');

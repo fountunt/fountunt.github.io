@@ -512,3 +512,143 @@
     font-size: 1.05rem;
   }
 }
+
+/* ========== GitHub 同步设置 ========== */
+.diary-sync-section {
+  margin-top: 40px;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+
+.diary-sync-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0;
+  cursor: pointer;
+  user-select: none;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.diary-sync-header:hover {
+  color: var(--text-secondary);
+}
+
+.diary-sync-header i:first-child {
+  font-size: 0.9rem;
+}
+
+.diary-sync-badge {
+  margin-left: auto;
+  font-size: 0.8rem;
+}
+
+.diary-sync-badge .fa-check-circle {
+  color: #22c55e;
+}
+
+.diary-sync-badge .fa-exclamation-circle {
+  color: #ef4444;
+}
+
+.diary-sync-badge .fa-sync {
+  color: #f59e0b;
+}
+
+.diary-sync-arrow {
+  font-size: 0.7rem;
+  transition: transform 0.25s ease;
+  margin-left: 4px;
+}
+
+.diary-sync-arrow.open {
+  transform: rotate(180deg);
+}
+
+.diary-sync-body {
+  padding: 12px 0 8px;
+}
+
+.diary-sync-desc {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.diary-sync-field {
+  display: flex;
+  gap: 8px;
+}
+
+.diary-sync-field input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: var(--font-mono);
+}
+
+.diary-sync-field input:focus {
+  border-color: var(--accent);
+}
+
+.diary-sync-field button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.diary-sync-field button:hover {
+  background: var(--accent-dark);
+}
+
+.diary-sync-tip {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.diary-sync-tip code {
+  background: var(--bg-secondary);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.diary-sync-tip a {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .diary-sync-section {
+    margin-top: 28px;
+    padding-top: 12px;
+  }
+
+  .diary-sync-field {
+    flex-direction: column;
+  }
+
+  .diary-sync-field button {
+    width: 100%;
+    justify-content: center;
+  }
+}
