@@ -172,6 +172,8 @@ let editTarget = null;  // 编辑模式下指向被编辑的条目 body
 
 // ── 弹窗 DOM ────────────────────────────
 const modalOverlay = document.getElementById('diary-modal-overlay');
+// 弹窗移到 body 下，避开卡片 backdrop-filter 造成的层叠上下文限制
+document.body.appendChild(modalOverlay);
 const modalEl = document.querySelector('.diary-modal');
 const modalHeader = document.querySelector('.diary-modal-header');
 const modalTitle = document.getElementById('diary-modal-title');
