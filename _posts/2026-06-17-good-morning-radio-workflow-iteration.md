@@ -2,7 +2,7 @@
 layout: post
 title: "早安电台工作流迭代：横屏改版与一键自动化"
 date: 2026-06-17 12:00:00 +0800
-categories: [项目,抖音]
+categories: [早安电台,项目,抖音]
 tags: [自动化流程,起号,Codex,效率提升]
 ---
 
